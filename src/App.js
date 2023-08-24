@@ -80,14 +80,8 @@ const SearchBar = () => {
   );
 };
 
-const NavBar = ({ movies }) => {
-  return (
-    <nav className="nav-bar">
-      <Logo />
-      <SearchBar />
-      <NumResults movies={movies} />
-    </nav>
-  );
+const NavBar = ({ children }) => {
+  return <nav className="nav-bar">{children}</nav>;
 };
 
 const Main = ({ movies }) => {
@@ -227,7 +221,11 @@ export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   return (
     <>
-      <NavBar movies={movies} />
+      <NavBar movies={movies}>
+        <Logo />
+        <SearchBar />
+        <NumResults movies={movies} />
+      </NavBar>
       <Main movies={movies} />
     </>
   );
