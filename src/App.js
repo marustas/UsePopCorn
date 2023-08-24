@@ -88,7 +88,7 @@ const Main = ({ children }) => {
   return <main className="main">{children}</main>;
 };
 
-const Box = ({ element }) => {
+const Box = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -96,7 +96,7 @@ const Box = ({ element }) => {
       <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
         {isOpen ? "–" : "+"}
       </button>
-      {isOpen && element}
+      {isOpen && children}
     </div>
   );
 };
@@ -200,20 +200,16 @@ export default function App() {
       </NavBar>
       <Main>
         {/*
-        <Box>
-          <MovieList movies={movies} />
-        </Box> 
+        <Box element={<MovieList movies={movies} />} />
         This is the same as the line below:  
         */}
-        <Box element={<MovieList movies={movies} />} />
-        <Box
-          element={
-            <>
-              <WatchedSummary watched={watched} />{" "}
-              <WatchedMovieList watched={watched} />
-            </>
-          }
-        />
+        <Box>
+          <MovieList movies={movies} />
+        </Box>
+        <Box>
+          <WatchedSummary watched={watched} />
+          <WatchedMovieList watched={watched} />
+        </Box>
       </Main>
     </>
   );
