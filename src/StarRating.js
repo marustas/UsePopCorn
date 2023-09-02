@@ -26,6 +26,7 @@ const StarStyle = {
 const StarRating = ({ maxRating }) => {
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
+
   const handleRating = (rating) => {
     setRating(rating);
   };
@@ -35,7 +36,7 @@ const StarRating = ({ maxRating }) => {
       <div style={StarContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
-            full={rating >= i + 1 ? true : false}
+            full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
             onRate={() => handleRating(i + 1)}
             key={i}
             onHoverIn={() => setTempRating(i + 1)}
@@ -43,7 +44,7 @@ const StarRating = ({ maxRating }) => {
           />
         ))}
       </div>
-      <p style={Text}>{rating || ""}</p>
+      <p style={Text}>{tempRating || rating || ""}</p>
     </div>
   );
 };
