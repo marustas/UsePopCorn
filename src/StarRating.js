@@ -11,7 +11,12 @@ const StarContainerStyle = {
   gap: "4px",
 };
 
-const StarRating = ({ maxRating = 5, color = "#fcc419", size = 48 }) => {
+const StarRating = ({
+  maxRating = 5,
+  color = "#fcc419",
+  size = 48,
+  messageRating = [],
+}) => {
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
 
@@ -41,7 +46,11 @@ const StarRating = ({ maxRating = 5, color = "#fcc419", size = 48 }) => {
           />
         ))}
       </div>
-      <p style={Text}>{tempRating || rating || ""}</p>
+      <p style={Text}>
+        {messageRating.length
+          ? messageRating[tempRating ? tempRating - 1 : rating - 1]
+          : tempRating || rating || ""}
+      </p>
     </div>
   );
 };
@@ -78,7 +87,7 @@ const Star = ({ onRate, full, onHoverIn, onHoverOut, color, size }) => {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke="#000"
+          stroke={color}
         >
           <path
             strokeLinecap="round"
