@@ -11,7 +11,7 @@ const StarContainerStyle = {
   gap: "4px",
 };
 
-const StarRating = ({ maxRating = 5, color = "fcc419", size = 48 }) => {
+const StarRating = ({ maxRating = 5, color = "#fcc419", size = 48 }) => {
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
 
@@ -23,7 +23,7 @@ const StarRating = ({ maxRating = 5, color = "fcc419", size = 48 }) => {
     lineHeight: "1",
     margin: "0",
     color,
-    size: `${size / 1.5}px`,
+    fontSize: `${size / 1.5}px`,
   };
 
   return (
