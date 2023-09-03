@@ -12,14 +12,6 @@ const StarContainerStyle = {
   gap: "4px",
 };
 
-StarRating.propTypes = {
-  maxRating: propTypes.number,
-  defaultRating: propTypes.number,
-  color: propTypes.string,
-  size: propTypes.number,
-  messageRating: propTypes.Array,
-};
-
 const StarRating = ({
   maxRating = 5,
   color = "#fcc419",
@@ -66,6 +58,14 @@ const StarRating = ({
 };
 
 export default StarRating;
+
+StarRating.propTypes = {
+  maxRating: propTypes.number,
+  defaultRating: propTypes.number,
+  color: propTypes.string,
+  size: propTypes.number,
+  messageRating: propTypes.Array,
+};
 
 const Star = ({ onRate, full, onHoverIn, onHoverOut, color, size }) => {
   const StarStyle = {

@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <StarRating
-      maxRating={5}
+      maxRating="stas"
       messageRating={["Terrible", "Bad", "Okay", "Good", "Awesome"]}
     />
     {/*<App /> */}
