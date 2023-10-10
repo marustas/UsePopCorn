@@ -188,13 +188,11 @@ const WatchedSummary = ({ watched }) => {
     </div>
   );
 };
-const KEt = 'd14a910e'
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
 
-  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=gentlemen`).then((respone)=>respone.json().then((data)=>console.log(data)));
   return (
     <>
       <NavBar>
