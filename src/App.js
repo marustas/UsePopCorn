@@ -193,7 +193,7 @@ export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
 
-  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`).then((respone)=>respone.json()).then((data)=>console.log(data));
+  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=gentlemen`).then((respone)=>respone.json()).then((data)=>setMovies(data.Search));
   return (
     <>
       <NavBar>
