@@ -190,18 +190,19 @@ const WatchedSummary = ({ watched }) => {
 const KEY = "d14a910e";
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const QUERY = "interstellar";
 
   useEffect(function () {
     async function fetchMovies() {
       setLoading(true);
       const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&s=gentlemen`
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${QUERY}`
       );
-      const data = res.json();
-      setMovies(data.search);
+      const data = await res.json();
+      setMovies(data.Search);
       setLoading(false);
     }
     fetchMovies();
