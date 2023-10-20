@@ -192,14 +192,17 @@ const KEY = "d14a910e";
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(function () {
     async function fetchMovies() {
+      setLoading(true);
       const res = await fetch(
         `http://www.omdbapi.com/?apikey=${KEY}&s=gentlemen`
       );
       const data = res.json();
       setMovies(data.search);
+      setLoading(false);
     }
     fetchMovies();
   }, []);
@@ -215,9 +218,7 @@ export default function App() {
         <Box element={<MovieList movies={movies} />} />
         This is the same as the line below:  
         */}
-        <Box>
-          <MovieList movies={movies} />
-        </Box>
+        <Box>{isLoading ? <Loader /> : <MovieList movies={movies} />}</Box>
         <Box>
           <WatchedSummary watched={watched} />
           <WatchedMovieList watched={watched} />
@@ -226,3 +227,7 @@ export default function App() {
     </>
   );
 }
+
+const Loader = () => {
+  return <p className="Loader">Loading...</p>;
+};
