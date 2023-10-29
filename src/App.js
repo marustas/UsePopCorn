@@ -66,8 +66,7 @@ const NumResults = ({ movies }) => {
   );
 };
 
-const SearchBar = () => {
-  const [query, setQuery] = useState("");
+const SearchBar = ({ query, setQuery }) => {
   return (
     <input
       className="search"
@@ -198,37 +197,46 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const QUERY = "interstellar";
+  const [query, setQuery] = useState("");
 
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${QUERY}`
-        );
-        if (!res.ok) {
-          throw new Error("Ooops. Something went wrong.");
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
+          if (!res.ok) {
+            throw new Error("Ooops. Something went wrong.");
+          }
+          const data = await res.json();
+          if (data.Response === "False") {
+            throw new Error("Movie not found");
+          }
+          setMovies(data.Search);
+        } catch (error) {
+          setError(error.message);
+          console.log(error.message);
+        } finally {
+          setLoading(false);
         }
-        const data = await res.json();
-        if (data.Response === "False") {
-          throw new Error("Movie not found");
-        }
-        setMovies(data.Search);
-      } catch (error) {
-        setError(error.message);
-        console.log(error.message);
-      } finally {
-        setLoading(false);
       }
-    }
-    fetchMovies();
-  }, []);
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+      fetchMovies();
+    },
+    [query]
+  );
   return (
     <>
       <NavBar>
         <Logo />
-        <SearchBar />
+        <SearchBar query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
       <Main>
