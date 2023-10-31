@@ -160,16 +160,19 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
     Director: director,
     Genre: genre,
   } = movie;
-  useEffect(function () {
-    async function getMovieDetails() {
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
-      );
-      const data = await res.json();
-      setMovie(data);
-    }
-    getMovieDetails();
-  }, []);
+  useEffect(
+    function () {
+      async function getMovieDetails() {
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
+        );
+        const data = await res.json();
+        setMovie(data);
+      }
+      getMovieDetails();
+    },
+    [selectedId]
+  );
   return (
     <div className="details">
       <header>
@@ -177,11 +180,11 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
         <div className="details-overview">
           <h2>{title}</h2>
           <p>
-            {released}&bull; {runtime}
+            {released} &bull; {runtime}
           </p>
           <p>{genre}</p>
           <p>
-            <span>⭐️ {imdbRating} imdbRating</span>
+            <span>⭐️ {imdbRating} iMDb rating</span>
           </p>
         </div>
         <button className="btn-back" onClick={onCloseMovie}>
