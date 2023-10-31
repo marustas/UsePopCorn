@@ -90,22 +90,23 @@ const WatchedMovieList = ({ watched }) => {
 };
 
 const WatchedMovie = ({ movie }) => {
+  const { imdbID, Title: title, imdbRating, userRating, runtime } = movie;
   return (
-    <li key={movie.imdbID}>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
+    <li key={imdbID}>
+      <img src={movie.Poster} alt={`${title} poster`} />
+      <h3>{title}</h3>
       <div>
         <p>
           <span>⭐️</span>
-          <span>{movie.imdbRating}</span>
+          <span>{imdbRating}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{movie.userRating}</span>
+          <span>{userRating}</span>
         </p>
         <p>
           <span>⏳</span>
-          <span>{movie.runtime} min</span>
+          <span>{runtime} min</span>
         </p>
       </div>
     </li>
@@ -151,7 +152,6 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
   const [isMovieLoaded, setIsMovieLoaded] = useState(false);
   const {
     Title: title,
-    Year: year,
     Poster: poster,
     Runtime: runtime,
     imdbRating,
@@ -203,8 +203,12 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
             <p>
               <em>{plot}</em>
             </p>
-            <p>Starring {actors}</p>
-            <p>Directed by {director}</p>
+            <p>
+              <strong>Starring</strong> {actors}
+            </p>
+            <p>
+              <strong>Directed by</strong> {director}
+            </p>
           </section>{" "}
         </>
       ) : (
