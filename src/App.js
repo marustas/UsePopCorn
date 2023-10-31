@@ -150,6 +150,7 @@ const Error = ({ message }) => {
 const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched }) => {
   const [movie, setMovie] = useState({});
   const [isMovieLoaded, setIsMovieLoaded] = useState(false);
+  const [userRating, setUserRating] = useState("");
   const {
     Title: title,
     Poster: poster,
@@ -171,8 +172,8 @@ const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched }) => {
       poster,
       runtime: Number(runtime.split(" ").at(0)),
       imdbRating: Number(imdbRating),
+      userRating,
     };
-
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
@@ -215,10 +216,16 @@ const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched }) => {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={23} />
-              <button className="btn-add" onClick={handleAdd}>
-                Add to list
-              </button>
+              <StarRating
+                maxRating={10}
+                size={23}
+                onSetRating={setUserRating}
+              />
+              {userRating > 0 && (
+                <button className="btn-add" onClick={handleAdd}>
+                  Add to list
+                </button>
+              )}
             </div>
             <p>
               <em>{plot}</em>
