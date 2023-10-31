@@ -148,6 +148,7 @@ const Error = ({ message }) => {
 
 const SelectedMovie = ({ selectedId, onCloseMovie }) => {
   const [movie, setMovie] = useState({});
+  const [isMovieLoaded, setIsMovieLoaded] = useState(false);
   const {
     Title: title,
     Year: year,
@@ -163,11 +164,13 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
   useEffect(
     function () {
       async function getMovieDetails() {
+        setIsMovieLoaded(false);
         const res = await fetch(
           `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
         );
         const data = await res.json();
         setMovie(data);
+        setIsMovieLoaded(true);
       }
       getMovieDetails();
     },
@@ -175,32 +178,38 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
   );
   return (
     <div className="details">
-      <header>
-        <img src={poster} alt={`Poster of ${movie}`} />
-        <div className="details-overview">
-          <h2>{title}</h2>
-          <p>
-            {released} &bull; {runtime}
-          </p>
-          <p>{genre}</p>
-          <p>
-            <span>⭐️ {imdbRating} iMDb rating</span>
-          </p>
-        </div>
-        <button className="btn-back" onClick={onCloseMovie}>
-          &larr;
-        </button>
-      </header>
-      <section>
-        <div className="rating">
-          <StarRating maxRating={10} size={23} />
-        </div>
-        <p>
-          <em>{plot}</em>
-        </p>
-        <p>Starring {actors}</p>
-        <p>Directed by {director}</p>
-      </section>
+      {isMovieLoaded ? (
+        <>
+          <header>
+            <img src={poster} alt={`Poster of ${movie}`} />
+            <div className="details-overview">
+              <h2>{title}</h2>
+              <p>
+                {released} &bull; {runtime}
+              </p>
+              <p>{genre}</p>
+              <p>
+                <span>⭐️ {imdbRating} iMDb rating</span>
+              </p>
+            </div>
+            <button className="btn-back" onClick={onCloseMovie}>
+              &larr;
+            </button>
+          </header>
+          <section>
+            <div className="rating">
+              <StarRating maxRating={10} size={23} />
+            </div>
+            <p>
+              <em>{plot}</em>
+            </p>
+            <p>Starring {actors}</p>
+            <p>Directed by {director}</p>
+          </section>{" "}
+        </>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };
