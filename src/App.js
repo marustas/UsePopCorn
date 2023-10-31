@@ -90,10 +90,10 @@ const WatchedMovieList = ({ watched }) => {
 };
 
 const WatchedMovie = ({ movie }) => {
-  const { imdbID, Title: title, imdbRating, userRating, runtime } = movie;
+  const { imdbID, title, imdbRating, userRating, runtime, poster } = movie;
   return (
     <li key={imdbID}>
-      <img src={movie.Poster} alt={`${title} poster`} />
+      <img src={poster} alt={`${title} poster`} />
       <h3>{title}</h3>
       <div>
         <p>
@@ -147,13 +147,14 @@ const Error = ({ message }) => {
   return <p className="error">{message}</p>;
 };
 
-const SelectedMovie = ({ selectedId, onCloseMovie }) => {
+const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched }) => {
   const [movie, setMovie] = useState({});
   const [isMovieLoaded, setIsMovieLoaded] = useState(false);
   const {
     Title: title,
     Poster: poster,
     Runtime: runtime,
+    Year: year,
     imdbRating,
     Plot: plot,
     Released: released,
@@ -161,6 +162,21 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
     Director: director,
     Genre: genre,
   } = movie;
+
+  function handleAdd() {
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      runtime: Number(runtime.split(" ").at(0)),
+      imdbRating: Number(imdbRating),
+    };
+
+    onAddWatched(newWatchedMovie);
+    onCloseMovie();
+  }
+
   useEffect(
     function () {
       async function getMovieDetails() {
@@ -176,6 +192,7 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
     },
     [selectedId]
   );
+
   return (
     <div className="details">
       {isMovieLoaded ? (
@@ -199,6 +216,9 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
           <section>
             <div className="rating">
               <StarRating maxRating={10} size={23} />
+              <button className="btn-add" onClick={handleAdd}>
+                Add to list
+              </button>
             </div>
             <p>
               <em>{plot}</em>
@@ -233,6 +253,10 @@ export default function App() {
   function handleCloseMovie() {
     setSelectedId(null);
   }
+  function handleAddWatchedMovie(movie) {
+    setWatched((watched) => [...watched, movie]);
+  }
+
   useEffect(
     function () {
       async function fetchMovies() {
@@ -266,6 +290,7 @@ export default function App() {
     },
     [query]
   );
+
   return (
     <>
       <NavBar>
@@ -290,6 +315,7 @@ export default function App() {
             <SelectedMovie
               onCloseMovie={handleCloseMovie}
               selectedId={selectedId}
+              onAddWatched={handleAddWatchedMovie}
             />
           ) : (
             <>
