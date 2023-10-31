@@ -1,6 +1,6 @@
 import { func } from "prop-types";
 import { useEffect, useState } from "react";
-
+import StarRating from "./StarRating";
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
@@ -189,6 +189,9 @@ const SelectedMovie = ({ selectedId, onCloseMovie }) => {
         </button>
       </header>
       <section>
+        <div className="rating">
+          <StarRating maxRating={10} size={23} />
+        </div>
         <p>
           <em>{plot}</em>
         </p>
