@@ -226,7 +226,7 @@ export default function App() {
         <Box>
           {selectedId ? (
             <SelectedMovie
-              oCloseMovie={handleCloseMovie}
+              onCloseMovie={handleCloseMovie}
               selectedId={selectedId}
             />
           ) : (
