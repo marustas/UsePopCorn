@@ -147,10 +147,14 @@ const Error = ({ message }) => {
   return <p className="error">{message}</p>;
 };
 
-const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched }) => {
+const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched, watched }) => {
   const [movie, setMovie] = useState({});
   const [isMovieLoaded, setIsMovieLoaded] = useState(false);
   const [userRating, setUserRating] = useState("");
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const watchedMovieUserRating = watched.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
   const {
     Title: title,
     Poster: poster,
@@ -216,15 +220,23 @@ const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched }) => {
           </header>
           <section>
             <div className="rating">
-              <StarRating
-                maxRating={10}
-                size={23}
-                onSetRating={setUserRating}
-              />
-              {userRating > 0 && (
-                <button className="btn-add" onClick={handleAdd}>
-                  Add to list
-                </button>
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={23}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  You rated this movie {watchedMovieUserRating} <span>🌟</span>{" "}
+                </p>
               )}
             </div>
             <p>
@@ -323,6 +335,7 @@ export default function App() {
               onCloseMovie={handleCloseMovie}
               selectedId={selectedId}
               onAddWatched={handleAddWatchedMovie}
+              watched={watched}
             />
           ) : (
             <>
