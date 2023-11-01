@@ -194,7 +194,16 @@ const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched, watched }) => {
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
+  useEffect(
+    function () {
+      document.title = `MOVIE | ${title}`;
 
+      return function () {
+        document.title = "UsePopcorn";
+      };
+    },
+    [title]
+  );
   useEffect(
     function () {
       async function getMovieDetails() {
