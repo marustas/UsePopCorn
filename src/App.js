@@ -22,9 +22,24 @@ const NumResults = ({ movies }) => {
 
 const SearchBar = ({ query, setQuery }) => {
   const inputElement = useRef(null);
-  useEffect(function () {
-    inputElement.current.focus();
-  }, []);
+
+  useEffect(
+    function () {
+      function callback(event) {
+        if (document.activeElement === inputElement.current) {
+          return;
+        }
+        if (event.code === "Enter") {
+          inputElement.current.focus();
+          setQuery("");
+        }
+      }
+      document.addEventListener("keydown", callback);
+      return () => document.addEventListener("keydown", callback);
+    },
+    [setQuery]
+  );
+
   return (
     <input
       className="search"
@@ -32,7 +47,7 @@ const SearchBar = ({ query, setQuery }) => {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
-      ref={null}
+      ref={inputElement}
     />
   );
 };
@@ -218,9 +233,7 @@ const SelectedMovie = ({ selectedId, onCloseMovie, onAddWatched, watched }) => {
         }
       }
       document.addEventListener("keydown", callback);
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
+      return () => document.removeEventListener("keydown", callback);
     },
     [onCloseMovie]
   );
