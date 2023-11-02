@@ -1,4 +1,3 @@
-import { func } from "prop-types";
 import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 const average = (arr) =>
@@ -298,11 +297,14 @@ const KEY = "d14a910e";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue);
+  });
 
   function handleDeleteWatchedMovie(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
@@ -315,6 +317,8 @@ export default function App() {
   }
   function handleAddWatchedMovie(movie) {
     setWatched((watched) => [...watched, movie]);
+    //Alternative to useEffect but doesn't automatically get removed from local storage
+    // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
 
   function handleSetQuery(query) {
@@ -361,6 +365,13 @@ export default function App() {
       controller.abort();
     };
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   return (
     <>
